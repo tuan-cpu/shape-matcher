@@ -10,4 +10,8 @@
         grid-gap: 10px;
         padding: 20px;
     }
+    .hidden{
+        visibility: hidden;
+        background-color: #858890;
+    }
 }
