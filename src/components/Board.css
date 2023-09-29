@@ -1,5 +1,6 @@
 .board{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -10,8 +11,8 @@
         grid-gap: 10px;
         padding: 20px;
     }
-    .hidden{
-        visibility: hidden;
-        background-color: #858890;
+    .attempts{
+        font-size: calc(10px + 2vmin);
+        color: white;
     }
 }

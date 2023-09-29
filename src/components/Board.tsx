@@ -8,6 +8,7 @@ const Board: React.FC = () => {
     color: String;
     shape: String;
   }
+  const [attempts,setAttempts] = useState<number>(0);
   const [initialCell, setInitialCell] = useState<Array<CellStruct>>([]);
   const [revealedCell, setRevealedCell] = useState<Array<number>>([]);
   const [foundCell,setFoundCell] = useState<Array<number>>([]);
@@ -38,8 +39,7 @@ const Board: React.FC = () => {
     let initial_array: CellStruct[] = [];
     let chosen_shape: String;
     let chosen_color: String;
-    chosen_shape =
-      shapes_array[Math.floor(Math.random() * shapes_array.length)];
+    chosen_shape = shapes_array[Math.floor(Math.random() * shapes_array.length)];
     chosen_color = color_array[Math.floor(Math.random() * color_array.length)];
     for (let i = 0; i < 3; i++) {
       if (shapes_array[i] === chosen_shape) {
@@ -74,9 +74,11 @@ const Board: React.FC = () => {
       setFirstOpenCell(index);
       setRevealedCell([...revealedCell,index]);
       setSecondOpenCell(-1);
+      setAttempts(attempts+1);
     } else {
       setDelay(true);
       setSecondOpenCell(index);
+      setAttempts(attempts+1);
     }
   };
   useEffect(() => {
@@ -107,6 +109,10 @@ const Board: React.FC = () => {
   return (
     <div className="board">
       {/* Render each cell in the board */}
+      {foundCell.length === 16?
+      <div className="attempts">
+        Congratulations
+      </div>:''}
       <div className="grid">
         {initialCell.map((cell, index) => {
           let check: boolean;
@@ -129,6 +135,9 @@ const Board: React.FC = () => {
             </div>
           )
         })}
+      </div>
+      <div className="attempts">
+        Number of attempts: {attempts}
       </div>
     </div>
   );
