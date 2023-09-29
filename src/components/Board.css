@@ -1,4 +1,6 @@
 .board{
     display: grid;
     grid-template-columns: 4;
+    justify-content: center;
+    align-items: center;
 }

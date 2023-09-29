@@ -8,7 +8,15 @@ const Board: React.FC = () => {
     color: String,
     shape: String
   }
+  interface RevealedCell{
+    first: number,
+    second: number
+  }
   const [initialCell,setInitialCell] = useState<Array<CellStruct>>([]);
+  const [revealedCell, setRevealedCell] = useState<Array<RevealedCell>>([]);
+  const [firstOpenCell, setFirstOpenCell] = useState<number>(-1);
+  const [secondOpenCell, setSecondOpenCell] = useState<number>(-1);
+
   function shuffle(array: CellStruct[]) {
     let currentIndex = array.length, randomIndex;
   
@@ -50,15 +58,31 @@ const Board: React.FC = () => {
 
   const handleCellClick = (index: number) => {
     // Reveal cell, check for matches, update game state, and handle game completion
+    if(firstOpenCell === -1){
+      setFirstOpenCell(index);
+    }else{
+      setSecondOpenCell(index)
+    }
   };
+  useEffect(()=>{
+    if(secondOpenCell !== -1){
+      if(JSON.stringify(initialCell[firstOpenCell]) === JSON.stringify(initialCell[secondOpenCell])){
+        setRevealedCell((prev)=>[...prev,{
+          first: firstOpenCell,
+          second: secondOpenCell
+        }])
+      }
+    }
+  },[secondOpenCell])
 
   return (
     <div className="board">
       {/* Render each cell in the board */}
-      {initialCell.map((cell)=>(
-        <Cell shape={cell.shape} color={cell.color}/>
+      {initialCell.map((cell, index)=>(
+        <div onClick={()=>handleCellClick(index)} className={revealedCell.filter(res => res.first === index || res.second === index)?'hidden':''}>
+          <Cell key={index} shape={cell.shape} color={cell.color}/>
+        </div>
       ))}
-      Hello world
     </div>
   );
 };
