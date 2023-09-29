@@ -9,9 +9,12 @@ interface CellProps {
 
 const Cell: React.FC<CellProps> = (props: CellProps) => {
   // Render cell with shape and color, use CSS to style based on shape and color.
+  const cellStyle = {
+    backgroundColor: props.color.toString(),
+  };
   return(
-    <div className='cell'>
-      {props.color} & {props.shape}
+    <div className='cell' style={cellStyle}>
+      {props.shape}
     </div>
   )
 };

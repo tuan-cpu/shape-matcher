@@ -36,17 +36,26 @@ const Board: React.FC = () => {
     let initial_array: CellStruct[] = [];
     let chosen_shape : String;
     let chosen_color : String;
-    while(initial_array.length < 8){
-      chosen_shape = shapes_array[Math.floor(Math.random()*shapes_array.length)];
-      chosen_color = color_array[Math.floor(Math.random()*color_array.length)];
-      if(!initial_array.filter(cell => cell.color === chosen_color && cell.shape === chosen_shape)){
-        initial_array.push({
-          color: chosen_color,
-          shape: chosen_shape
-        })
+    chosen_shape = shapes_array[Math.floor(Math.random()*shapes_array.length)];
+    chosen_color = color_array[Math.floor(Math.random()*color_array.length)];
+    for(let i=0;i<3;i++){
+      if(shapes_array[i] === chosen_shape){
+        for(let j=0;j<3;j++){
+          if(color_array[j] !== chosen_color){
+            initial_array.push({
+              shape: shapes_array[i],
+              color: color_array[j]
+            })
+          }
+        }
+      }else{
+        for(let j=0;j<3;j++){
+            initial_array.push({
+              shape: shapes_array[i],
+              color: color_array[j]
+            })
+        }
       }
-      chosen_color = "";
-      chosen_shape = "";
     }
     let final_array: CellStruct[] = [];
     for(let i=0;i<8;i++){
@@ -78,11 +87,13 @@ const Board: React.FC = () => {
   return (
     <div className="board">
       {/* Render each cell in the board */}
-      {initialCell.map((cell, index)=>(
-        <div onClick={()=>handleCellClick(index)} className={revealedCell.filter(res => res.first === index || res.second === index)?'hidden':''}>
-          <Cell key={index} shape={cell.shape} color={cell.color}/>
-        </div>
-      ))}
+      <div className='grid'>
+        {initialCell.map((cell, index)=>(
+          <div onClick={()=>handleCellClick(index)} className={revealedCell.filter(res => res.first === index || res.second === index)?'hidden':''}>
+            <Cell key={index} shape={cell.shape} color={cell.color}/>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
